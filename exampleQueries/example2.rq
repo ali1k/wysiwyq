@@ -21,4 +21,5 @@ SELECT DISTINCT ?s  ?title  WHERE {
     ?s rdfs:label ?title .
   } OPTIONAL {
     FILTER langMatches( lang(?title), "EN" )
-  }  
+  }    
+}
