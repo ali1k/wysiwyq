@@ -7,19 +7,21 @@ PREFIX void: <http://rdfs.org/ns/void#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT DISTINCT ?s  ?title  WHERE {
-  {
-    SELECT DISTINCT ?s WHERE {
-      ?s rdf:type <http://xmlns.com/foaf/0.1/Person> .
-      ?s <http://dbpedia.org/ontology/field> ?v1.
-      ?s <http://xmlns.com/foaf/0.1/gender> ?v2.
-      ?s <http://dbpedia.org/ontology/nationality> ?v3.
-      FILTER (iri(?v1) IN (<http://dbpedia.org/resource/Chemistry>) && str(?v2) IN ("""female""") && iri(?v3) IN (<http://dbpedia.org/resource/United_States>)) 
+  GRAPH <http://risis.eu/cordisH2020> {
+    {
+      SELECT DISTINCT ?s WHERE {
+        GRAPH <http://risis.eu/cordisH2020> {
+          ?s rdf:type <http://risis.eu/cordisH2020/vocab/SignedGrantAgreement> .
+          ?s <http://risis.eu/cordisH2020/vocab/coordinatorCountry> ?v1.
+          ?s <http://risis.eu/cordisH2020/vocab/fundingScheme> ?v2.
+          ?s <http://risis.eu/cordisH2020/vocab/program> ?v3.
+          FILTER (str(?v1) IN ("""NL""") && iri(?v2) IN (<http://risis.eu/cordisH2020/resource/fundingScheme_RIA>,<http://risis.eu/cordisH2020/resource/fundingScheme_ERC-STG>) && iri(?v3) IN (<http://risis.eu/cordisH2020/resource/program_H2020-EU.3.1.>,<http://risis.eu/cordisH2020/resource/program_H2020-EU.2.1.1.>)) 
+        } 
+      }
+      LIMIT 20 OFFSET 0
     }
-    LIMIT 20 OFFSET 0
-  }
-  OPTIONAL {
-    ?s rdfs:label ?title .
-  } OPTIONAL {
-    FILTER langMatches( lang(?title), "EN" )
-  }    
+    OPTIONAL {
+      ?s <http://purl.org/dc/terms/title> ?title .
+    }     
+  } 
 }
