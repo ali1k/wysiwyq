@@ -11,16 +11,17 @@ SELECT DISTINCT ?s  ?title  WHERE {
     {
       SELECT DISTINCT ?s WHERE {
         GRAPH <http://grid.ac/20170522> {
-          ?s rdf:type <http://xmlns.com/foaf/0.1/Organization> .
           ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1.
           ?s <http://www.grid.ac/ontology/establishedYear> ?v2.
-          FILTER (iri(?v1) IN (<http://www.grid.ac/ontology/Company>,<http://www.grid.ac/ontology/Healthcare>) && str(?v2) IN ("""1998+01:00""","""2001+01:00"""))
-        }
+          FILTER (iri(?v1) IN (<http://www.grid.ac/ontology/Education>,<http://www.grid.ac/ontology/Nonprofit>) && str(?v2) IN ("""2000+01:00""","""2006+01:00""")) 
+        } 
       }
       LIMIT 20 OFFSET 0
     }
     OPTIONAL {
-      ?s <http://www.w3.org/2000/01/rdf-schema#label> ?title .
-    }
-  }
+      ?s rdfs:label ?title .
+    } OPTIONAL {
+      FILTER langMatches( lang(?title), "EN" )
+    }    
+  } 
 }
